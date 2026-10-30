@@ -1,0 +1,16 @@
+{
+  "min_field_confidence": 0.8,
+  "name_match_pass": 0.9,
+  "name_match_reject_below": 0.75,
+  "watchlist_match": 0.9,
+  "watchlist_possible": 0.8,
+  "minimum_age": 18,
+  "pan_pattern": "^[A-Z]{5}[0-9]{4}[A-Z]$",
+  "pan_holder_type_character": "P",
+  "address_proof_max_age_days": 90,
+  "name_title_tokens": ["MR", "MRS", "MS", "MISS", "DR", "SHRI", "SMT", "KUMARI"],
+  "medium_income_threshold": 2500000,
+  "rekyc_years": { "HIGH": 2, "MEDIUM": 8, "LOW": 10 },
+  "resubmission_window_days": 7,
+  "checker_sla_hours": 24
+}

@@ -1,0 +1,3 @@
+import mongoose from 'mongoose';
+const schema = new mongoose.Schema({ applicationId: { type: String, unique: true, index: true }, decision: { type: String, enum: ['APPROVE', 'REVIEW', 'REJECT'], required: true }, reasonCodes: [String], nameMatchScore: Number, riskCategory: { type: String, enum: ['LOW', 'MEDIUM', 'HIGH', null], default: null }, rekycDueDate: { type: String, default: null }, evaluatedAt: { type: Date, required: true }, status: String, documents: [mongoose.Schema.Types.Mixed], evidence: mongoose.Schema.Types.Mixed }, { timestamps: true });
+export default mongoose.model('Decision', schema);

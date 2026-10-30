@@ -1,0 +1,20 @@
+import express from 'express';
+import cors from 'cors';
+import authRoutes from './routes/auth.routes.js';
+import applicationRoutes from './routes/application.routes.js';
+import documentRoutes from './routes/document.routes.js';
+import officerRoutes from './routes/officer.routes.js';
+import checkerRoutes from './routes/checker.routes.js';
+import complianceRoutes from './routes/compliance.routes.js';
+import coreBankingRoutes from './routes/coreBanking.routes.js';
+import { notFound, errorHandler } from './middleware/error.middleware.js';
+
+const app = express();
+app.disable('x-powered-by'); app.use(cors({ origin: process.env.FRONTEND_ORIGIN || 'http://localhost:5173', credentials: true }));
+app.use(express.json({ limit: '1mb' })); app.use(express.urlencoded({ extended: false, limit: '1mb' }));
+app.get('/health', (_req, res) => res.json({ success: true, message: 'Service is healthy', data: { status: 'ok' } }));
+const prefix = process.env.API_PREFIX || '/api/v1';
+app.use(`${prefix}/auth`, authRoutes); app.use(`${prefix}/applications`, applicationRoutes); app.use(`${prefix}/documents`, documentRoutes);
+app.use(`${prefix}/officer`, officerRoutes); app.use(`${prefix}/checker`, checkerRoutes); app.use(`${prefix}/compliance`, complianceRoutes); app.use(`${prefix}/core-banking`, coreBankingRoutes);
+app.use(notFound); app.use(errorHandler);
+export default app;

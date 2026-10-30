@@ -1,0 +1,64 @@
+{
+  "info": {
+    "_postman_id": "a4181a8f-7ae2-4b5f-bfd5-174e2e1d8312",
+    "name": "OnboardIQ Backend",
+    "description": "Smoke tests and shared-contract examples for the OnboardIQ API.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:5000/api/v1" },
+    { "key": "token", "value": "" },
+    { "key": "applicationId", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Health",
+      "request": { "method": "GET", "url": "http://localhost:5000/health" }
+    },
+    {
+      "name": "Login demo customer",
+      "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": ["pm.test('login succeeds', () => pm.response.to.have.status(200));", "const body = pm.response.json();", "pm.collectionVariables.set('token', body.data.token);"] } }],
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": { "mode": "raw", "raw": "{\n  \"email\": \"customer@onboardiq.test\",\n  \"password\": \"DemoPass123!\"\n}" },
+        "url": "{{baseUrl}}/auth/login"
+      }
+    },
+    {
+      "name": "Current user",
+      "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": "{{baseUrl}}/auth/me" }
+    },
+    {
+      "name": "Create customer application",
+      "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": ["pm.test('application created', () => pm.response.to.have.status(201));", "const body = pm.response.json();", "pm.collectionVariables.set('applicationId', body.data.application.applicationId);"] } }],
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }],
+        "body": { "mode": "raw", "raw": "{\n  \"personalDetails\": {\n    \"fullName\": \"Asha Rao\", \"dob\": \"1995-04-12\", \"gender\": \"FEMALE\",\n    \"panNumber\": \"ZZKPS1234Q\", \"aadhaarLast4\": \"4821\", \"mobile\": \"9876543210\",\n    \"email\": \"asha@example.test\", \"occupationCode\": \"SALARIED_PRIVATE\",\n    \"annualIncome\": 900000, \"consentToKyc\": true\n  },\n  \"addressDetails\": {\n    \"address\": \"Flat 12, Lotus Residency, MG Road\", \"city\": \"Mumbai\",\n    \"state\": \"Maharashtra\", \"pincode\": \"400001\"\n  }\n}" },
+        "url": "{{baseUrl}}/applications"
+      }
+    },
+    {
+      "name": "List my applications",
+      "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": "{{baseUrl}}/applications/mine?page=1&limit=10" }
+    },
+    {
+      "name": "Get application",
+      "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": "{{baseUrl}}/applications/{{applicationId}}" }
+    },
+    {
+      "name": "Upload document (replace file and type)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+        "body": { "mode": "formdata", "formdata": [{ "key": "documentType", "value": "PAN_CARD", "type": "text" }, { "key": "file", "type": "file", "src": "" }] },
+        "url": "{{baseUrl}}/applications/{{applicationId}}/documents"
+      }
+    },
+    {
+      "name": "Submit application (upload 3 files first)",
+      "request": { "method": "POST", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{}" }, "url": "{{baseUrl}}/applications/{{applicationId}}/submit" }
+    }
+  ]
+}

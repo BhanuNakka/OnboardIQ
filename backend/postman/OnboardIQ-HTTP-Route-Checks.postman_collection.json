@@ -1,0 +1,798 @@
+{
+  "info": {
+    "name": "OnboardIQ HTTP Route Checks",
+    "description": "Postman checks for every current API contract route. Without MongoDB credentials, public validation and protected-route auth gates are checked.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "event": [
+        {
+          "script": {
+            "exec": [
+              "pm.test('returns HTTP 200', function () { pm.response.to.have.status(200); });"
+            ],
+            "type": "text/javascript"
+          },
+          "listen": "test"
+        }
+      ],
+      "name": "Health",
+      "request": {
+        "header": [],
+        "url": "http://localhost:5000/health",
+        "method": "GET"
+      }
+    },
+    {
+      "event": [
+        {
+          "script": {
+            "exec": [
+              "pm.test('returns HTTP 400', function () { pm.response.to.have.status(400); });",
+              "pm.test('uses standard JSON error envelope', function () { const body = pm.response.json(); pm.expect(body.success).to.eql(false); pm.expect(body.error).to.be.an('object'); pm.expect(body.error.code).to.be.a('string'); pm.expect(body.error.details).to.be.an('array'); });"
+            ],
+            "type": "text/javascript"
+          },
+          "listen": "test"
+        }
+      ],
+      "name": "Register rejects missing fields",
+      "request": {
+        "body": {
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          },
+          "raw": "{}",
+          "mode": "raw"
+        },
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/auth/register",
+        "method": "POST"
+      }
+    },
+    {
+      "event": [
+        {
+          "script": {
+            "exec": [
+              "pm.test('returns HTTP 400', function () { pm.response.to.have.status(400); });",
+              "pm.test('uses standard JSON error envelope', function () { const body = pm.response.json(); pm.expect(body.success).to.eql(false); pm.expect(body.error).to.be.an('object'); pm.expect(body.error.code).to.be.a('string'); pm.expect(body.error.details).to.be.an('array'); });"
+            ],
+            "type": "text/javascript"
+          },
+          "listen": "test"
+        }
+      ],
+      "name": "Login rejects missing fields",
+      "request": {
+        "body": {
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          },
+          "raw": "{}",
+          "mode": "raw"
+        },
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/auth/login",
+        "method": "POST"
+      }
+    },
+    {
+      "event": [
+        {
+          "script": {
+            "exec": [
+              "pm.test('returns HTTP 401', function () { pm.response.to.have.status(401); });",
+              "pm.test('uses standard JSON error envelope', function () { const body = pm.response.json(); pm.expect(body.success).to.eql(false); pm.expect(body.error).to.be.an('object'); pm.expect(body.error.code).to.be.a('string'); pm.expect(body.error.details).to.be.an('array'); });"
+            ],
+            "type": "text/javascript"
+          },
+          "listen": "test"
+        }
+      ],
+      "name": "Me requires authentication",
+      "request": {
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{baseUrl}}/auth/me",
+        "method": "GET"
+      }
+    },
+    {
+      "event": [
+        {
+          "script": {
+            "exec": [
+              "pm.test('returns HTTP 401', function () { pm.response.to.have.status(401); });",
+              "pm.test('uses standard JSON error envelope', function () { const body = pm.response.json(); pm.expect(body.success).to.eql(false); pm.expect(body.error).to.be.an('object'); pm.expect(body.error.code).to.be.a('string'); pm.expect(body.error.details).to.be.an('array'); });"
+            ],
+            "type": "text/javascript"
+          },
+          "listen": "test"
+        }
+      ],
+      "name": "Create application requires authentication",
+      "request": {
+        "body": {
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          },
+          "raw": "{}",
+          "mode": "raw"
+        },
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/applications",
+        "method": "POST"
+      }
+    },
+    {
+      "event": [
+        {
+          "script": {
+            "exec": [
+              "pm.test('returns HTTP 401', function () { pm.response.to.have.status(401); });",
+              "pm.test('uses standard JSON error envelope', function () { const body = pm.response.json(); pm.expect(body.success).to.eql(false); pm.expect(body.error).to.be.an('object'); pm.expect(body.error.code).to.be.a('string'); pm.expect(body.error.details).to.be.an('array'); });"
+            ],
+            "type": "text/javascript"
+          },
+          "listen": "test"
+        }
+      ],
+      "name": "List mine requires authentication",
+      "request": {
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{baseUrl}}/applications/mine",
+        "method": "GET"
+      }
+    },
+    {
+      "event": [
+        {
+          "script": {
+            "exec": [
+              "pm.test('returns HTTP 401', function () { pm.response.to.have.status(401); });",
+              "pm.test('uses standard JSON error envelope', function () { const body = pm.response.json(); pm.expect(body.success).to.eql(false); pm.expect(body.error).to.be.an('object'); pm.expect(body.error.code).to.be.a('string'); pm.expect(body.error.details).to.be.an('array'); });"
+            ],
+            "type": "text/javascript"
+          },
+          "listen": "test"
+        }
+      ],
+      "name": "List applications requires authentication",
+      "request": {
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{baseUrl}}/applications",
+        "method": "GET"
+      }
+    },
+    {
+      "event": [
+        {
+          "script": {
+            "exec": [
+              "pm.test('returns HTTP 401', function () { pm.response.to.have.status(401); });",
+              "pm.test('uses standard JSON error envelope', function () { const body = pm.response.json(); pm.expect(body.success).to.eql(false); pm.expect(body.error).to.be.an('object'); pm.expect(body.error.code).to.be.a('string'); pm.expect(body.error.details).to.be.an('array'); });"
+            ],
+            "type": "text/javascript"
+          },
+          "listen": "test"
+        }
+      ],
+      "name": "Get application requires authentication",
+      "request": {
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{baseUrl}}/applications/A2000001",
+        "method": "GET"
+      }
+    },
+    {
+      "event": [
+        {
+          "script": {
+            "exec": [
+              "pm.test('returns HTTP 401', function () { pm.response.to.have.status(401); });",
+              "pm.test('uses standard JSON error envelope', function () { const body = pm.response.json(); pm.expect(body.success).to.eql(false); pm.expect(body.error).to.be.an('object'); pm.expect(body.error.code).to.be.a('string'); pm.expect(body.error.details).to.be.an('array'); });"
+            ],
+            "type": "text/javascript"
+          },
+          "listen": "test"
+        }
+      ],
+      "name": "Edit application requires authentication",
+      "request": {
+        "body": {
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          },
+          "raw": "{}",
+          "mode": "raw"
+        },
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/applications/A2000001",
+        "method": "PATCH"
+      }
+    },
+    {
+      "event": [
+        {
+          "script": {
+            "exec": [
+              "pm.test('returns HTTP 401', function () { pm.response.to.have.status(401); });",
+              "pm.test('uses standard JSON error envelope', function () { const body = pm.response.json(); pm.expect(body.success).to.eql(false); pm.expect(body.error).to.be.an('object'); pm.expect(body.error.code).to.be.a('string'); pm.expect(body.error.details).to.be.an('array'); });"
+            ],
+            "type": "text/javascript"
+          },
+          "listen": "test"
+        }
+      ],
+      "name": "Submit application requires authentication",
+      "request": {
+        "body": {
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          },
+          "raw": "{}",
+          "mode": "raw"
+        },
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/applications/A2000001/submit",
+        "method": "POST"
+      }
+    },
+    {
+      "event": [
+        {
+          "script": {
+            "exec": [
+              "pm.test('returns HTTP 401', function () { pm.response.to.have.status(401); });",
+              "pm.test('uses standard JSON error envelope', function () { const body = pm.response.json(); pm.expect(body.success).to.eql(false); pm.expect(body.error).to.be.an('object'); pm.expect(body.error.code).to.be.a('string'); pm.expect(body.error.details).to.be.an('array'); });"
+            ],
+            "type": "text/javascript"
+          },
+          "listen": "test"
+        }
+      ],
+      "name": "Upload document requires authentication",
+      "request": {
+        "body": {
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          },
+          "raw": "{}",
+          "mode": "raw"
+        },
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/applications/A2000001/documents",
+        "method": "POST"
+      }
+    },
+    {
+      "event": [
+        {
+          "script": {
+            "exec": [
+              "pm.test('returns HTTP 401', function () { pm.response.to.have.status(401); });",
+              "pm.test('uses standard JSON error envelope', function () { const body = pm.response.json(); pm.expect(body.success).to.eql(false); pm.expect(body.error).to.be.an('object'); pm.expect(body.error.code).to.be.a('string'); pm.expect(body.error.details).to.be.an('array'); });"
+            ],
+            "type": "text/javascript"
+          },
+          "listen": "test"
+        }
+      ],
+      "name": "List documents requires authentication",
+      "request": {
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{baseUrl}}/applications/A2000001/documents",
+        "method": "GET"
+      }
+    },
+    {
+      "event": [
+        {
+          "script": {
+            "exec": [
+              "pm.test('returns HTTP 401', function () { pm.response.to.have.status(401); });",
+              "pm.test('uses standard JSON error envelope', function () { const body = pm.response.json(); pm.expect(body.success).to.eql(false); pm.expect(body.error).to.be.an('object'); pm.expect(body.error.code).to.be.a('string'); pm.expect(body.error.details).to.be.an('array'); });"
+            ],
+            "type": "text/javascript"
+          },
+          "listen": "test"
+        }
+      ],
+      "name": "Extract document requires authentication",
+      "request": {
+        "body": {
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          },
+          "raw": "{}",
+          "mode": "raw"
+        },
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/documents/000000000000000000000001/extract",
+        "method": "POST"
+      }
+    },
+    {
+      "event": [
+        {
+          "script": {
+            "exec": [
+              "pm.test('returns HTTP 401', function () { pm.response.to.have.status(401); });",
+              "pm.test('uses standard JSON error envelope', function () { const body = pm.response.json(); pm.expect(body.success).to.eql(false); pm.expect(body.error).to.be.an('object'); pm.expect(body.error.code).to.be.a('string'); pm.expect(body.error.details).to.be.an('array'); });"
+            ],
+            "type": "text/javascript"
+          },
+          "listen": "test"
+        }
+      ],
+      "name": "List extractions requires authentication",
+      "request": {
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{baseUrl}}/applications/A2000001/extractions",
+        "method": "GET"
+      }
+    },
+    {
+      "event": [
+        {
+          "script": {
+            "exec": [
+              "pm.test('returns HTTP 401', function () { pm.response.to.have.status(401); });",
+              "pm.test('uses standard JSON error envelope', function () { const body = pm.response.json(); pm.expect(body.success).to.eql(false); pm.expect(body.error).to.be.an('object'); pm.expect(body.error.code).to.be.a('string'); pm.expect(body.error.details).to.be.an('array'); });"
+            ],
+            "type": "text/javascript"
+          },
+          "listen": "test"
+        }
+      ],
+      "name": "Evaluate application requires authentication",
+      "request": {
+        "body": {
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          },
+          "raw": "{}",
+          "mode": "raw"
+        },
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/applications/A2000001/evaluate",
+        "method": "POST"
+      }
+    },
+    {
+      "event": [
+        {
+          "script": {
+            "exec": [
+              "pm.test('returns HTTP 401', function () { pm.response.to.have.status(401); });",
+              "pm.test('uses standard JSON error envelope', function () { const body = pm.response.json(); pm.expect(body.success).to.eql(false); pm.expect(body.error).to.be.an('object'); pm.expect(body.error.code).to.be.a('string'); pm.expect(body.error.details).to.be.an('array'); });"
+            ],
+            "type": "text/javascript"
+          },
+          "listen": "test"
+        }
+      ],
+      "name": "Get decision requires authentication",
+      "request": {
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{baseUrl}}/applications/A2000001/decision",
+        "method": "GET"
+      }
+    },
+    {
+      "event": [
+        {
+          "script": {
+            "exec": [
+              "pm.test('returns HTTP 401', function () { pm.response.to.have.status(401); });",
+              "pm.test('uses standard JSON error envelope', function () { const body = pm.response.json(); pm.expect(body.success).to.eql(false); pm.expect(body.error).to.be.an('object'); pm.expect(body.error.code).to.be.a('string'); pm.expect(body.error.details).to.be.an('array'); });"
+            ],
+            "type": "text/javascript"
+          },
+          "listen": "test"
+        }
+      ],
+      "name": "Officer queue requires authentication",
+      "request": {
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{baseUrl}}/officer/review-queue",
+        "method": "GET"
+      }
+    },
+    {
+      "event": [
+        {
+          "script": {
+            "exec": [
+              "pm.test('returns HTTP 401', function () { pm.response.to.have.status(401); });",
+              "pm.test('uses standard JSON error envelope', function () { const body = pm.response.json(); pm.expect(body.success).to.eql(false); pm.expect(body.error).to.be.an('object'); pm.expect(body.error.code).to.be.a('string'); pm.expect(body.error.details).to.be.an('array'); });"
+            ],
+            "type": "text/javascript"
+          },
+          "listen": "test"
+        }
+      ],
+      "name": "Officer detail requires authentication",
+      "request": {
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{baseUrl}}/officer/applications/A2000001",
+        "method": "GET"
+      }
+    },
+    {
+      "event": [
+        {
+          "script": {
+            "exec": [
+              "pm.test('returns HTTP 401', function () { pm.response.to.have.status(401); });",
+              "pm.test('uses standard JSON error envelope', function () { const body = pm.response.json(); pm.expect(body.success).to.eql(false); pm.expect(body.error).to.be.an('object'); pm.expect(body.error.code).to.be.a('string'); pm.expect(body.error.details).to.be.an('array'); });"
+            ],
+            "type": "text/javascript"
+          },
+          "listen": "test"
+        }
+      ],
+      "name": "Officer recommendation requires authentication",
+      "request": {
+        "body": {
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          },
+          "raw": "{}",
+          "mode": "raw"
+        },
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/officer/applications/A2000001/recommend",
+        "method": "POST"
+      }
+    },
+    {
+      "event": [
+        {
+          "script": {
+            "exec": [
+              "pm.test('returns HTTP 401', function () { pm.response.to.have.status(401); });",
+              "pm.test('uses standard JSON error envelope', function () { const body = pm.response.json(); pm.expect(body.success).to.eql(false); pm.expect(body.error).to.be.an('object'); pm.expect(body.error.code).to.be.a('string'); pm.expect(body.error.details).to.be.an('array'); });"
+            ],
+            "type": "text/javascript"
+          },
+          "listen": "test"
+        }
+      ],
+      "name": "Checker queue requires authentication",
+      "request": {
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{baseUrl}}/checker/pending",
+        "method": "GET"
+      }
+    },
+    {
+      "event": [
+        {
+          "script": {
+            "exec": [
+              "pm.test('returns HTTP 401', function () { pm.response.to.have.status(401); });",
+              "pm.test('uses standard JSON error envelope', function () { const body = pm.response.json(); pm.expect(body.success).to.eql(false); pm.expect(body.error).to.be.an('object'); pm.expect(body.error.code).to.be.a('string'); pm.expect(body.error.details).to.be.an('array'); });"
+            ],
+            "type": "text/javascript"
+          },
+          "listen": "test"
+        }
+      ],
+      "name": "Checker decision requires authentication",
+      "request": {
+        "body": {
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          },
+          "raw": "{}",
+          "mode": "raw"
+        },
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/checker/applications/A2000001/decision",
+        "method": "POST"
+      }
+    },
+    {
+      "event": [
+        {
+          "script": {
+            "exec": [
+              "pm.test('returns HTTP 401', function () { pm.response.to.have.status(401); });",
+              "pm.test('uses standard JSON error envelope', function () { const body = pm.response.json(); pm.expect(body.success).to.eql(false); pm.expect(body.error).to.be.an('object'); pm.expect(body.error.code).to.be.a('string'); pm.expect(body.error.details).to.be.an('array'); });"
+            ],
+            "type": "text/javascript"
+          },
+          "listen": "test"
+        }
+      ],
+      "name": "Compliance dashboard requires authentication",
+      "request": {
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{baseUrl}}/compliance/dashboard",
+        "method": "GET"
+      }
+    },
+    {
+      "event": [
+        {
+          "script": {
+            "exec": [
+              "pm.test('returns HTTP 401', function () { pm.response.to.have.status(401); });",
+              "pm.test('uses standard JSON error envelope', function () { const body = pm.response.json(); pm.expect(body.success).to.eql(false); pm.expect(body.error).to.be.an('object'); pm.expect(body.error.code).to.be.a('string'); pm.expect(body.error.details).to.be.an('array'); });"
+            ],
+            "type": "text/javascript"
+          },
+          "listen": "test"
+        }
+      ],
+      "name": "Compliance audit requires authentication",
+      "request": {
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{baseUrl}}/compliance/audit/A2000001",
+        "method": "GET"
+      }
+    },
+    {
+      "event": [
+        {
+          "script": {
+            "exec": [
+              "pm.test('returns HTTP 401', function () { pm.response.to.have.status(401); });",
+              "pm.test('uses standard JSON error envelope', function () { const body = pm.response.json(); pm.expect(body.success).to.eql(false); pm.expect(body.error).to.be.an('object'); pm.expect(body.error.code).to.be.a('string'); pm.expect(body.error.details).to.be.an('array'); });"
+            ],
+            "type": "text/javascript"
+          },
+          "listen": "test"
+        }
+      ],
+      "name": "Decision export requires authentication",
+      "request": {
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{baseUrl}}/compliance/decisions/export",
+        "method": "GET"
+      }
+    },
+    {
+      "event": [
+        {
+          "script": {
+            "exec": [
+              "pm.test('returns HTTP 401', function () { pm.response.to.have.status(401); });",
+              "pm.test('uses standard JSON error envelope', function () { const body = pm.response.json(); pm.expect(body.success).to.eql(false); pm.expect(body.error).to.be.an('object'); pm.expect(body.error.code).to.be.a('string'); pm.expect(body.error.details).to.be.an('array'); });"
+            ],
+            "type": "text/javascript"
+          },
+          "listen": "test"
+        }
+      ],
+      "name": "Create core account requires authentication",
+      "request": {
+        "body": {
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          },
+          "raw": "{}",
+          "mode": "raw"
+        },
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/core-banking/accounts",
+        "method": "POST"
+      }
+    },
+    {
+      "event": [
+        {
+          "script": {
+            "exec": [
+              "pm.test('returns HTTP 401', function () { pm.response.to.have.status(401); });",
+              "pm.test('uses standard JSON error envelope', function () { const body = pm.response.json(); pm.expect(body.success).to.eql(false); pm.expect(body.error).to.be.an('object'); pm.expect(body.error.code).to.be.a('string'); pm.expect(body.error.details).to.be.an('array'); });"
+            ],
+            "type": "text/javascript"
+          },
+          "listen": "test"
+        }
+      ],
+      "name": "Get core account requires authentication",
+      "request": {
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{baseUrl}}/core-banking/accounts/A2000001",
+        "method": "GET"
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5000/api/v1"
+    },
+    {
+      "key": "token",
+      "value": ""
+    }
+  ]
+}

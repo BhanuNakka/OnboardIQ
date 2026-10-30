@@ -1,0 +1,4 @@
+occupation_code,description,risk_level
+SALARIED_PRIVATE,Private salaried employee,LOW
+STUDENT,Student,LOW
+JEWELLER_BULLION_DEALER,Bullion dealer,HIGH

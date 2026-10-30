@@ -1,0 +1,8 @@
+node_modules/
+frontend/dist/
+frontend/.env.local
+frontend/.env.*.local
+backend/.env
+backend/uploads/*
+!backend/uploads/.gitkeep
+npm-debug.log*
